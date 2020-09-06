@@ -42,7 +42,6 @@ class Authorization {
     ahb.clientCredentials = _clientCredentials;
     ahb.method = 'POST';
     ahb.url = _platform.temporaryCredentialsRequestURI;
-    ahb.additionalParameters = additionalParams;
 
     final http.Response res = await _httpClient.post(
         _platform.temporaryCredentialsRequestURI,
@@ -53,10 +52,6 @@ class Authorization {
     }
 
     final Map<String, String> params = Uri.splitQueryString(res.body);
-    final String confirmed = params['oauth_callback_confirmed'].toLowerCase();
-    if (confirmed != 'true' && confirmed != '1') {
-      throw StateError('oauth_callback_confirmed must be true');
-    }
 
     return AuthorizationResponse.fromMap(params);
   }
@@ -83,7 +78,6 @@ class Authorization {
     ahb.credentials = tokenCredentials;
     ahb.method = 'POST';
     ahb.url = _platform.tokenCredentialsRequestURI;
-    ahb.additionalParameters = additionalParams;
 
     final http.Response res = await _httpClient.post(
         _platform.tokenCredentialsRequestURI,
